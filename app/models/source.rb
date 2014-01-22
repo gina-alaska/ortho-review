@@ -46,7 +46,7 @@ class Source < ActiveRecord::Base
   end
 
   def path
-    './previews/spot_preview_test'
+    Rails.root.join('previews/spot_preview_test').to_s
   end
 
   def metadata
