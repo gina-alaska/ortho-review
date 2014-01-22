@@ -1,0 +1,50 @@
+.panel.panel-default
+  .panel-heading
+    Search
+  .panel-body
+    = form_tag '/', method: :get, class: 'form' do
+      .form-group
+        = label_tag :name, 'Name', class: 'control-label'
+        = text_field_tag :name, params[:field], class: 'form-control'
+          
+      .pull-right
+        = submit_tag 'Search', class: 'btn btn-primary'
+
+= will_paginate @sources
+
+%table.table.table-bordered.source{ style: 'width: 100%;' }
+  %thead
+    %tr
+      %th Name
+      %th State
+      %th Created
+      %th Updated
+      %th Accepted
+      %th Rejected
+      %th Flagged
+      %th Preview
+  %tbody
+    - @sources.each do |source|
+      %tr
+        %td= source.name
+        %td= source.state
+        %td
+          %nobr= source.created_at.try(:to_date)
+        %td
+          %nobr= source.updated_at.try(:to_date)
+        %td
+          %nobr= source.accepted_at.try(:to_date)
+        %td
+          %nobr= source.rejected_at.try(:to_date)
+        %td
+          %nobr= source.flagged_at.try(:to_date)
+        %td{ rowspan: 2, style: 'text-align: center;' }
+          - if source.preview_exists?
+            = link_to preview_path(source.name), target: :_blank do
+              = image_tag preview_path(source.name), style: 'max-width: 200px;'
+      %tr
+        %td{ colspan: 7 }
+          %b Notes: 
+          = source.note.try(:text)
+          
+= will_paginate @sources
