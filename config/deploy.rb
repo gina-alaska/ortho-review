@@ -11,7 +11,7 @@ set :format, :pretty
 # set :pty, true
 
 set :linked_files, %w{config/initializers/secret_token.rb}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system preview }
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system previews }
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 set :keep_releases, 5

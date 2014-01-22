@@ -24,7 +24,7 @@ test:
 
 production:
   adapter: postgresql
-  database: tracker_prod
+  database: tracker_dev
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: <%= ENV['DATABASE_HOST'] %>  
