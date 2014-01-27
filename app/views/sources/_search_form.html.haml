@@ -1,0 +1,37 @@
+.panel.panel-default.search-form
+  .panel-heading
+    Search
+  .panel-body
+    = form_tag '/', method: :get, class: 'form' do
+      .row
+        .col-lg-6
+          .form-group
+            = label_tag :name, 'Name', class: 'control-label'
+            = text_field_tag :name, params[:field], class: 'form-control'
+        .col-lg-3
+          .form-group
+            = label_tag :start_date, 'Start Date', class: 'control-label'
+            = text_field_tag :start_date, params[:start_date], class: 'form-control', placeholder: 'YYYY-MM-DD'
+          
+        .col-lg-3
+          .form-group
+            = label_tag :end_date, 'End Date', class: 'control-label'
+            = text_field_tag :end_date, params[:end_date], class: 'form-control', placeholder: 'YYYY-MM-DD'
+      .pull-right
+        = submit_tag 'Search', class: 'btn btn-primary'
+  .panel-footer
+    %dl.dl-horizontal
+      .row
+        .col-lg-4
+          - unless @total_found.nil?
+            %dt Total found:
+            %dd= @total_found
+        - unless @states.nil? or @states.empty?
+          .col-lg-4
+            - @states[(0...(@states.length/2))].each do |r|
+              %dt= "#{r.first.humanize}: "
+              %dd= r.last
+          .col-lg-4
+            - @states[((@states.length/2)..@states.length)].each do |r|
+              %dt= "#{r.first.humanize}: "
+              %dd= r.last

@@ -2,7 +2,7 @@ class SourcesController < ApplicationController
   respond_to :html, :xml
   
   def index
-    @sources = Source.order("date(created_at) DESC, name ASC")
+    @sources = Source
     
     if params[:name].present?
       @sources = @sources.where('name ilike ?', "%#{params[:name]}%")
@@ -11,6 +11,31 @@ class SourcesController < ApplicationController
     if params[:state].present?
       @sources = @sources.where('state = ?', params[:state])
     end
+    
+    if params[:start_date].present? and params[:end_date].present?
+      #we have both do between
+      s = DateTime.parse(params[:start_date]).beginning_of_day
+      e = DateTime.parse(params[:end_date]).end_of_day
+      
+      @sources = @sources.where(created_at: (s..e))
+    else
+      #only one date figure out which one we have
+      if params[:start_date].present?
+        s = DateTime.parse(params[:start_date]).beginning_of_day      
+        @sources = @sources.where('created_at > ?', s)
+      end
+      if params[:end_date].present?
+        e = DateTime.parse(params[:end_date]).end_of_day
+        @sources = @sources.where('created_at < ?', e)
+      end
+      
+    end
+    
+    @total_found = @sources.count
+    states_results = @sources.select("state, count(*) as state_count").group('state')
+    @states = states_results.map { |s| [s.state, s.state_count] }
+    
+    @sources = @sources.order("date(created_at) DESC, name ASC")
     
     respond_to do |format|
       format.html {
